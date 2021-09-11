@@ -20,14 +20,16 @@ const DEL = ';';
 
   let column=[];
   column.push('Restaurant Name');
+  column.push('Address');
+  column.push('Amenities');
   column.push('Page No');
-  column.push('Name');
+  column.push('User Name');
   column.push('Date');
   column.push('Rating');
   column.push('no of Reviews');
   column.push('no of Friends');
   column.push('no of Photos');
-  column.push('Amenities');
+
   column.push('Comments');
 
   let strColumn = column.join(DEL);
@@ -53,10 +55,7 @@ const DEL = ';';
         arrAmenities.push($(el).find('.css-1h1j0y3').text());
     });
 
-    strAmenities = arrAmenities.join(', ')
-
-     
-    
+    strAmenities = arrAmenities.join(', ');
 
     $('ul.undefined.list__373c0__vNxqp li').each((i, el) => {
       let scrapeDataArr =[],  cnt=0;
@@ -64,6 +63,12 @@ const DEL = ';';
 
       //Hotel Name
       scrapeDataArr[cnt++] = $('h1').text() ;
+
+      //Address
+      scrapeDataArr[cnt++] = $('address').text() ;
+
+      //Amenities
+      scrapeDataArr[cnt++] =  strAmenities;
 
        //Page No
        scrapeDataArr[cnt++] = pageNo;
@@ -99,8 +104,6 @@ const DEL = ';';
       scrapeDataArr[cnt++] = $(el)
         .find('.user-passport-stats__373c0__2nBtY [aria-label="Photos"] .css-1dgkz3l')
         .text()
-
-      scrapeDataArr[cnt++] =  strAmenities;
 
       //Comments
       scrapeDataArr[cnt++] = $(el)

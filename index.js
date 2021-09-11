@@ -2,6 +2,9 @@ const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
+
+const DEL = ';';
+
 (async () => {
   const browser = await puppeteer.launch({
       headless:false ,
@@ -21,32 +24,34 @@ const fs = require('fs');
     writeStream.write(`Name;Comments\n`);
     
     const $ = cheerio.load(await page.content(), null, false);
-    return $('h1').text() ;
+     $('h1').text() ;
     
-        // $('.post-preview').each((i, el) => {
-    //   const title = $(el)
-    //     .find('.post-title')
-    //     .text()
-    //     .replace(/\s\s+/g, '');
-    //   const link = $(el)
-    //     .find('a')
-    //     .attr('href');
-    //   const date = $(el)
-    //     .find('.post-date')
-    //     .text()
-    //     .replace(/,/, '');
+    const reviewList= 'ul.undefined.list__373c0__vNxqp li ';
 
-    //   // Write Row To CSV
-    //   writeStream.write(`${title}, ${link}, ${date} \n`);
-    // });
-    
-     writeStream.write(`${name}; ${comment} \n`);
-    
-  }
+    $(reviewList).each((i, el) => {
 
-  await scrape('https://www.yelp.com/biz/madhuram-fremont'); 
+      const userName = $(el)
+        .find('.fs-block a.css-166la90')
+        .text();
+      const comment = $(el)
+        .find('p')
+        .text()
+        .replace(/\s\s+/g, '');
+      
+      // Write Row To CSV
+      writeStream.write(`${userName} ${DEL} ${comment} ${DEL} \n`);
+    });
 
+     //writeStream.write(`${name}; ${comment} \n`);
   
-  await page.waitFor(3000);
+  };
+
+  for(let i=0;i<=30;i+10){
+    await scrape('https://www.yelp.com/biz/madhuram-fremont?start=${i}'); 
+  }
+  
+
+  writeStream.close();
+  await page.waitFor(1000);
   await browser.close();
 })();

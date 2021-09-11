@@ -23,6 +23,23 @@ const fs = require('fs');
     const $ = cheerio.load(await page.content(), null, false);
     return $('h1').text() ;
     
+        // $('.post-preview').each((i, el) => {
+    //   const title = $(el)
+    //     .find('.post-title')
+    //     .text()
+    //     .replace(/\s\s+/g, '');
+    //   const link = $(el)
+    //     .find('a')
+    //     .attr('href');
+    //   const date = $(el)
+    //     .find('.post-date')
+    //     .text()
+    //     .replace(/,/, '');
+
+    //   // Write Row To CSV
+    //   writeStream.write(`${title}, ${link}, ${date} \n`);
+    // });
+    
      writeStream.write(`${name}; ${comment} \n`);
     
   }

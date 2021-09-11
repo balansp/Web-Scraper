@@ -1,42 +1,27 @@
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 
-
 (async () => {
   const browser = await puppeteer.launch({
-    headless:false ,
-    defaultViewport:{
-      height:914,
-      width:1680
-    }
+      headless:false ,
+      defaultViewport:{
+        height:914,
+        width:1680
+      }
   });
- 
+
   const page = await browser.newPage();
 
-  await page.goto('https://www.yelp.com/biz/madhuram-fremont', {
-    waitUntil: 'networkidle0',
-  });
+  let scrape =  async  (url) => {
+    await page.goto(url, {
+      waitUntil: 'networkidle0',
+    });
+    const $ = cheerio.load(await page.content(), null, false);
+    return $('h1').text() ;
+  }
 
-  
-  // await page.evaluate(() => {
-  //   document.querySelector('.pagination__373c0__2LZaJ').scrollIntoView();
-  // });
+  let md = await scrape('https://www.yelp.com/biz/madhuram-fremont'); 
 
- 
-  const content = await page.content();
-  //console.log(content);
-  const $ = cheerio.load(content);
-  console.log($.html());
-
-
-// //  const selector = '.hide-below-b__373c0__3e53i.css-7vz7be';
-//   await page.waitForSelector('.pagination-link-component__373c0__37Woa.css-166la90');
-//   await page.click('.pagination-link-component__373c0__37Woa.css-166la90');
-
-
-
-
-await page.waitFor(3000);
-
- await browser.close();
+  await page.waitFor(3000);
+  await browser.close();
 })();

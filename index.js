@@ -16,32 +16,27 @@ const puppeteer = require('puppeteer');
   await page.goto('https://www.yelp.com/biz/madhuram-fremont', {
     waitUntil: 'networkidle0',
   });
-  //await page.screenshot({ path: 'example.png' });
+
   
-  const dimensions = await page.evaluate(() => {
-    document.querySelector('.pagination__373c0__2LZaJ').scrollIntoView();
+  // await page.evaluate(() => {
+  //   document.querySelector('.pagination__373c0__2LZaJ').scrollIntoView();
+  // });
 
-    return {
-      width: document.documentElement.clientWidth,
-      height: document.documentElement.clientHeight,
-      deviceScaleFactor: window.devicePixelRatio,
-    };
-  });
-
-   console.log(dimensions)
-  // const content = await page.content();
-  // const $ = cheerio.load(content);
- // console.log($.html());
+ 
+  const content = await page.content();
+  //console.log(content);
+  const $ = cheerio.load(content);
+  console.log($.html());
 
 
-//  const selector = '.hide-below-b__373c0__3e53i.css-7vz7be';
-  await page.waitForSelector('.pagination-link-component__373c0__37Woa.css-166la90');
-  await page.click('.pagination-link-component__373c0__37Woa.css-166la90');
+// //  const selector = '.hide-below-b__373c0__3e53i.css-7vz7be';
+//   await page.waitForSelector('.pagination-link-component__373c0__37Woa.css-166la90');
+//   await page.click('.pagination-link-component__373c0__37Woa.css-166la90');
 
 
 
 
-await page.waitFor(10000);
+await page.waitFor(3000);
 
  await browser.close();
 })();

@@ -67,9 +67,10 @@ const DEL = ';';
   
   };
 
-  for(let i=0;i<=30;i=i+10){
-    console.log(`https://www.yelp.com/biz/madhuram-fremont?start=${i}`)
-    await scrape(`https://www.yelp.com/biz/madhuram-fremont?start=${i}`); 
+  for(let i=0;i<= 119 ;i=i+10){
+    let URL = `https://www.yelp.com/biz/chaat-bhavan-fremont-fremont-3?start=${i}`;
+    console.log(URL)
+    await scrape(URL); 
   }
   
 

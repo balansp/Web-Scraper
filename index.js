@@ -19,7 +19,8 @@ const DEL = ';';
   writeStream.write(`sep=;\n`);
 
   let column=[];
-  column.push('PageNo');
+  column.push('Restaurant Name');
+  column.push('Page No');
   column.push('Name');
   column.push('Date');
   column.push('Rating');
@@ -34,7 +35,7 @@ const DEL = ';';
   writeStream.write(`${strColumn}\n`);
 
   let scrape =  async  (url,pageNo) => {
-    pageNo = pageNo/10 +1; 
+
     await page.goto(url, {
       waitUntil: 'networkidle0',
     });
@@ -54,14 +55,17 @@ const DEL = ';';
 
     strAmenities = arrAmenities.join(', ')
 
-     $('h1').text() ;
+     
     
 
     $('ul.undefined.list__373c0__vNxqp li').each((i, el) => {
       let scrapeDataArr =[],  cnt=0;
       let scrapeDataStr = '';
 
-       //UserName
+      //Hotel Name
+      scrapeDataArr[cnt++] = $('h1').text() ;
+
+       //Page No
        scrapeDataArr[cnt++] = pageNo;
 
       //UserName
@@ -96,7 +100,7 @@ const DEL = ';';
         .find('.user-passport-stats__373c0__2nBtY [aria-label="Photos"] .css-1dgkz3l')
         .text()
 
-        scrapeDataArr[cnt++] =  strAmenities;
+      scrapeDataArr[cnt++] =  strAmenities;
 
       //Comments
       scrapeDataArr[cnt++] = $(el)
@@ -115,12 +119,54 @@ const DEL = ';';
   
   };
 
-  for(let i=0;i<=10;i=i+10){
-    await scrape(`https://www.yelp.com/biz/madhuram-fremont?start=${i}`,i); 
-  }
+  let scrapeURLList = [
+    {
+      url:'https://www.yelp.com/biz/madhuram-fremont',
+      pages:15
+    },{
+      url:'https://www.yelp.com/biz/chaat-bhavan-fremont-fremont-3',
+      pages:119
+    },{
+      url:'https://www.yelp.com/biz/ashwins-kitchen-newark',
+      pages:12
+    },{
+      url:'https://www.yelp.com/biz/pakwan-restaurant-fremont-2',
+      pages:92
+    },{
+      url:'https://www.yelp.com/biz/biryani-pot-newark',
+      pages:47
+    },{
+      url:'https://www.yelp.com/biz/veg-n-chaat-cuisine-fremont-2',
+      pages:42
+    },{
+      url:'https://www.yelp.com/biz/bombay-street-food-fremont',
+      pages:5
+    },{
+      url:'https://www.yelp.com/biz/biryani-bowl-fremont-7',
+      pages:78
+    },{
+      url:'https://www.yelp.com/biz/paradise-biryani-pointe-fremont',
+      pages:54
+    },{
+      url:'https://www.yelp.com/biz/keeku-da-dhaba-fremont-2',
+      pages:17
+    },{
+      url:'https://www.yelp.com/biz/shalimar-restaurant-fremont',
+      pages:155
+    },
+    
+  ];
   
+  for(let s=0;s<scrapeURLList.length;s++){
+      for(let i=0;i<=scrapeURLList[s].pages;i++){
+        let url=`${scrapeURLList[s].url}?start=${i*10}`;
+        console.log(url);
+        await scrape(url,i+1); 
+      }
+  }
 
   writeStream.close();
   //await page.waitFor(1000);
   await browser.close();
 })();
+

@@ -19,6 +19,7 @@ const DEL = ';';
   writeStream.write(`sep=;\n`);
 
   let column=[];
+  column.push('URL')
   column.push('Restaurant Name');
   column.push('Address');
   column.push('Amenities');
@@ -26,11 +27,11 @@ const DEL = ';';
   column.push('User Name');
   column.push('Date');
   column.push('Rating');
-  column.push('no of Reviews');
-  column.push('no of Friends');
-  column.push('no of Photos');
-
+  column.push('No of Reviews');
+  column.push('No of Friends');
+  column.push('No of Photos');
   column.push('Comments');
+
 
   let strColumn = column.join(DEL);
 
@@ -60,10 +61,14 @@ const DEL = ';';
     strAmenities = arrAmenities.join(', ');
 
     $('ul.undefined.list__373c0__vNxqp li').each((i, el) => {
+      console.log('Extracting review:'+ i );
       let scrapeDataArr =[],  cnt=0;
       let scrapeDataStr = '';
 
       let firstItem = (pageNo==1 && i==0)
+      //URL
+      scrapeDataArr[cnt++] = (i==0) ? page.url :'' ;
+      
       //Hotel Name
       scrapeDataArr[cnt++] = (firstItem)? $('h1').text():'' ;
 
@@ -71,7 +76,7 @@ const DEL = ';';
       scrapeDataArr[cnt++] = (firstItem)? $('address').text() : '' ;
 
       //Amenities
-      scrapeDataArr[cnt++] =  (firstItem)?strAmenities : '';
+      scrapeDataArr[cnt++] = (firstItem) ? strAmenities : '';
 
        //Page No
        scrapeDataArr[cnt++] = pageNo;

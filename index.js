@@ -136,32 +136,32 @@ const DEL = ';';
       pages:15,
       //startFrom:10
     },{
-      url:'https://www.yelp.com/biz/chaat-bhavan-fremont-fremont-3',
-      pages:119
+      url:'https://www.yelp.com/biz/bombay-street-food-fremont',
+      pages:5
     },{
       url:'https://www.yelp.com/biz/ashwins-kitchen-newark',
       pages:12
     },{
-      url:'https://www.yelp.com/biz/pakwan-restaurant-fremont-2',
-      pages:92
+      url:'https://www.yelp.com/biz/keeku-da-dhaba-fremont-2',
+      pages:17
+    },,{
+      url:'https://www.yelp.com/biz/veg-n-chaat-cuisine-fremont-2',
+      pages:42
     },{
       url:'https://www.yelp.com/biz/biryani-pot-newark',
       pages:47
     },{
-      url:'https://www.yelp.com/biz/veg-n-chaat-cuisine-fremont-2',
-      pages:42
-    },{
-      url:'https://www.yelp.com/biz/bombay-street-food-fremont',
-      pages:5
+      url:'https://www.yelp.com/biz/paradise-biryani-pointe-fremont',
+      pages:54
     },{
       url:'https://www.yelp.com/biz/biryani-bowl-fremont-7',
       pages:78
     },{
-      url:'https://www.yelp.com/biz/paradise-biryani-pointe-fremont',
-      pages:54
+      url:'https://www.yelp.com/biz/pakwan-restaurant-fremont-2',
+      pages:92
     },{
-      url:'https://www.yelp.com/biz/keeku-da-dhaba-fremont-2',
-      pages:17
+      url:'https://www.yelp.com/biz/chaat-bhavan-fremont-fremont-3',
+      pages:119
     },{
       url:'https://www.yelp.com/biz/shalimar-restaurant-fremont',
       pages:155
@@ -180,5 +180,6 @@ const DEL = ';';
   writeStream.close();
   //await page.waitFor(1000);
   await browser.close();
+  console.log("Completed!!! :)");
 })();
 

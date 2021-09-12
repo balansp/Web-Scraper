@@ -134,43 +134,53 @@ const DEL = ';';
     {
       url:'https://www.yelp.com/biz/madhuram-fremont',
       pages:15,
-      //startFrom:10
+      startFrom:0
     },{
       url:'https://www.yelp.com/biz/bombay-street-food-fremont',
-      pages:5
+      pages:5,
+      startFrom:0
     },{
       url:'https://www.yelp.com/biz/ashwins-kitchen-newark',
-      pages:12
+      pages:12,
+      startFrom:0
     },{
       url:'https://www.yelp.com/biz/keeku-da-dhaba-fremont-2',
-      pages:17
+      pages:17,
+      startFrom:0
     },,{
       url:'https://www.yelp.com/biz/veg-n-chaat-cuisine-fremont-2',
-      pages:42
+      pages:42,
+      startFrom:0
     },{
       url:'https://www.yelp.com/biz/biryani-pot-newark',
-      pages:47
+      pages:47,
+      startFrom:0
     },{
       url:'https://www.yelp.com/biz/paradise-biryani-pointe-fremont',
-      pages:54
+      pages:54,
+      startFrom:0
     },{
       url:'https://www.yelp.com/biz/biryani-bowl-fremont-7',
-      pages:78
+      pages:78,
+      startFrom:0
     },{
       url:'https://www.yelp.com/biz/pakwan-restaurant-fremont-2',
-      pages:92
+      pages:92,
+      startFrom:0
     },{
       url:'https://www.yelp.com/biz/chaat-bhavan-fremont-fremont-3',
-      pages:119
+      pages:119,
+      startFrom:0
     },{
       url:'https://www.yelp.com/biz/shalimar-restaurant-fremont',
-      pages:155
+      pages:155,
+      startFrom:0
     },
     
   ];
   
   for(let s=0;s<scrapeURLList.length;s++){
-      for(let i=scrapeURLList[s].startFrom || 0 ;i<scrapeURLList[s].pages;i++){
+      for(let i=scrapeURLList[s].startFrom;i<scrapeURLList[s].pages;i++){
         let url=`${scrapeURLList[s].url}?start=${i*10}`;
         console.log(url);
         await scrape(url,i+1,s); 

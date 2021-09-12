@@ -39,10 +39,11 @@ const DEL = ';';
   let scrape =  async  (url,pageNo) => {
 
     await page.goto(url, {
-      waitUntil: 'load',
+      waitUntil: 'networkidle0',
       timeout:0
     });
     
+    await page.waitForSelector('[aria-label="Amenities and More"] button');
     await page.click('[aria-label="Amenities and More"] button');
 
     
@@ -62,14 +63,15 @@ const DEL = ';';
       let scrapeDataArr =[],  cnt=0;
       let scrapeDataStr = '';
 
+      let firstItem = (pageNo==1 && i==0)
       //Hotel Name
-      scrapeDataArr[cnt++] = $('h1').text() ;
+      scrapeDataArr[cnt++] = (firstItem)? $('h1').text():'' ;
 
       //Address
-      scrapeDataArr[cnt++] = $('address').text() ;
+      scrapeDataArr[cnt++] = (firstItem)? $('address').text() : '' ;
 
       //Amenities
-      scrapeDataArr[cnt++] =  strAmenities;
+      scrapeDataArr[cnt++] =  (firstItem)?strAmenities : '';
 
        //Page No
        scrapeDataArr[cnt++] = pageNo;
@@ -126,7 +128,8 @@ const DEL = ';';
   let scrapeURLList = [
     {
       url:'https://www.yelp.com/biz/madhuram-fremont',
-      pages:15
+      pages:15,
+      //startFrom:10
     },{
       url:'https://www.yelp.com/biz/chaat-bhavan-fremont-fremont-3',
       pages:119
@@ -162,7 +165,7 @@ const DEL = ';';
   ];
   
   for(let s=0;s<scrapeURLList.length;s++){
-      for(let i=0;i<=scrapeURLList[s].pages;i++){
+      for(let i=scrapeURLList[s].startFrom || 0 ;i<=scrapeURLList[s].pages;i++){
         let url=`${scrapeURLList[s].url}?start=${i*10}`;
         console.log(url);
         await scrape(url,i+1,s); 

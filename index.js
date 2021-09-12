@@ -7,7 +7,7 @@ const DEL = ';';
 
 (async () => {
   const browser = await puppeteer.launch({
-      headless:false ,
+      headless:true ,
       defaultViewport:{
         height:914,
         width:1680

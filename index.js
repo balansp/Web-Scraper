@@ -67,7 +67,7 @@ const DEL = ';';
 
       let firstItem = (pageNo==1 && i==0)
       //URL
-      scrapeDataArr[cnt++] = (i==0) ? page.url :'' ;
+      scrapeDataArr[cnt++] = (i==0) ? page.url() :'' ;
       
       //Hotel Name
       scrapeDataArr[cnt++] = (firstItem)? $('h1').text():'' ;

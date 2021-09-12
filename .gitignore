@@ -1,4 +1,4 @@
-scrapedData.csv
+*.csv
 .DS_Store
 # Logs
 logs

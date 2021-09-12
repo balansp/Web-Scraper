@@ -15,29 +15,9 @@ const DEL = ';';
   });
   const page = await browser.newPage();
 
-  const writeStream = fs.createWriteStream('scrapedData.csv');
-  writeStream.write(`sep=;\n`);
+ 
 
-  let column=[];
-  column.push('URL')
-  column.push('Restaurant Name');
-  column.push('Address');
-  column.push('Amenities');
-  column.push('Page No');
-  column.push('User Name');
-  column.push('Date');
-  column.push('Rating');
-  column.push('No of Reviews');
-  column.push('No of Friends');
-  column.push('No of Photos');
-  column.push('Comments');
-
-
-  let strColumn = column.join(DEL);
-
-  writeStream.write(`${strColumn}\n`);
-
-  let scrape =  async  (url,pageNo) => {
+  let scrape =  async  (url,pageNo,writeStream) => {
 
     await page.goto(url, {
       waitUntil: 'networkidle0',
@@ -133,7 +113,7 @@ const DEL = ';';
   let scrapeURLList = [
     {
       url:'https://www.yelp.com/biz/madhuram-fremont',
-      pages:15,
+      pages:2,
       startFrom:0
     },{
       url:'https://www.yelp.com/biz/bombay-street-food-fremont',
@@ -180,14 +160,40 @@ const DEL = ';';
   ];
   
   for(let s=0;s<scrapeURLList.length;s++){
+    let str=scrapeURLList[s].url;
+    let hotelName=str.substr(str.lastIndexOf("/")+1,str.length);
+
+    let writeStream = fs.createWriteStream(hotelName + '.csv');
+        writeStream.write(`sep=;\n`);
+      
+        let column=[];
+        column.push('URL')
+        column.push('Restaurant Name');
+        column.push('Address');
+        column.push('Amenities');
+        column.push('Page No');
+        column.push('User Name');
+        column.push('Date');
+        column.push('Rating');
+        column.push('No of Reviews');
+        column.push('No of Friends');
+        column.push('No of Photos');
+        column.push('Comments');
+  
+  
+    let strColumn = column.join(DEL);
+  
+    writeStream.write(`${strColumn}\n`);
+
       for(let i=scrapeURLList[s].startFrom;i<scrapeURLList[s].pages;i++){
         let url=`${scrapeURLList[s].url}?start=${i*10}`;
         console.log(url);
-        await scrape(url,i+1,s); 
+        await scrape(url,i+1,writeStream); 
       }
+      writeStream.close();
   }
 
-  writeStream.close();
+  
   //await page.waitFor(1000);
   await browser.close();
   console.log("Completed!!! :)");

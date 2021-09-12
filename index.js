@@ -39,7 +39,8 @@ const DEL = ';';
   let scrape =  async  (url,pageNo) => {
 
     await page.goto(url, {
-      waitUntil: 'networkidle0',
+      waitUntil: 'load',
+      timeout:0
     });
     
     await page.click('[aria-label="Amenities and More"] button');
@@ -164,7 +165,7 @@ const DEL = ';';
       for(let i=0;i<=scrapeURLList[s].pages;i++){
         let url=`${scrapeURLList[s].url}?start=${i*10}`;
         console.log(url);
-        await scrape(url,i+1); 
+        await scrape(url,i+1,s); 
       }
   }
 

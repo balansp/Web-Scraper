@@ -170,7 +170,7 @@ const DEL = ';';
   ];
   
   for(let s=0;s<scrapeURLList.length;s++){
-      for(let i=scrapeURLList[s].startFrom || 0 ;i<=scrapeURLList[s].pages;i++){
+      for(let i=scrapeURLList[s].startFrom || 0 ;i<scrapeURLList[s].pages;i++){
         let url=`${scrapeURLList[s].url}?start=${i*10}`;
         console.log(url);
         await scrape(url,i+1,s); 

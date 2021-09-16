@@ -174,7 +174,7 @@ const scrapeURLList = [
 
     for (let i = scrapeURLList[s].startFrom; i < scrapeURLList[s].pages; i++) {
       let url = `${scrapeURLList[s].url}?start=${i * 10}`;
-      console.log(`${url} [${i+1}/${scrapeURLList[s].pages}]`);
+      console.log(`Opening URL:${url} [${i+1}/${scrapeURLList[s].pages}]`);
       await scrape(url, i + 1, writeStream);
     }
     writeStream.close();

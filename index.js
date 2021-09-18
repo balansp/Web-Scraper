@@ -150,8 +150,11 @@ const scrapeURLList = [
   for (let s = 0; s < scrapeURLList.length; s++) {
     let str = scrapeURLList[s].url;
     let hotelName = str.substr(str.lastIndexOf("/") + 1, str.length);
-
-    let writeStream = fs.createWriteStream(`${hotelName}.csv`);
+    let dir = './output';
+    if(!fs.existsSync(dir)){
+       fs.mkdirSync(dir);
+    }
+    let writeStream = fs.createWriteStream(`${dir}/${hotelName}.csv`);
     writeStream.write(`sep=;\n`);
 
     let column = [];

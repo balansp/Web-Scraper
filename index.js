@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 const DEL = ';';
-
+const DIR = './output';
 const scrapeURLList = [
   {
     url:'https://www.yelp.com/biz/madhuram-fremont',
@@ -169,7 +169,10 @@ const scrapeURLList = [
     column.push('Comments');
 
     let strColumn = column.join(DEL);
-
+    if(!fs.existsSync(DIR)){
+       fs.mkdirSync(DIR);
+    }
+    writeStream = fs.createWriteStream(`${DIR}/${hotelName}.csv`);
     writeStream.write(`${strColumn}\n`);
 
     for (let i = scrapeURLList[s].startFrom; i < scrapeURLList[s].pages; i++) {

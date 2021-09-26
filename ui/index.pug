@@ -62,14 +62,14 @@ body
         $("#submit").click(function() {
           logger("Requesting server...");
             json = $("#json").val();
-            $.post("http://localhost:3000/scraper", {
+            $.post(location.href+"scraper", {
                 json: json
             }, function(data) {
                  logger("Response from server: " + data);
             });
         });
 
-        const ws = new WebSocket('ws://localhost:9898/');
+        const ws = new WebSocket('ws://'+location.hostname+':3001/');
         ws.onopen = function() {
           logger('Server Connected!');
            ws.send('lets connect?');

@@ -1,5 +1,81 @@
-html
-  head
-    title= title
-  body
-    h1= title
+head
+  link(rel="stylesheet" href="styles.css")
+  link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous")
+  style.
+    #json{
+      height:70vh;
+    }
+    #status{ 
+      border: none;
+      overflow-y: auto;
+      height: 20vh;
+      word-break: break-all;
+      background-color: #000;
+      color: #fff;
+    }
+
+  
+body
+  
+  .container
+    h1.align-center Motif - Webscraper!
+    .form-group
+      label(for='exampleFormControlTextarea1') JSON Input
+      textarea#json.form-control.rounded-0(rows='50' spellcheck='false').
+                                                    {
+                                                      "columns":[
+                                                          "url", "Page Number","User Name", "Userid","No of Friends","No of Reviews","No of Photos","Restaurant Name","Website", "Address", "Ratings", "Date","Comments"
+                                                      ],
+                                                      "urls":[
+                                                      {
+                                                        "url":"https://www.yelp.com/user_details_reviews_self?userid=0ObqLJu05px7PtUl57UJbw",
+                                                        "itrateParam":"&rec_pagestart",
+                                                        "pages":1,
+                                                        "startFrom":0,
+                                                        "outputCSV":"RUPINDER.csv"
+                                                      },
+                                                      {
+                                                        "url":"https://www.yelp.com/user_details_reviews_self?&userid=8k3aO-mPeyhbR5HUucA5aA",
+                                                        "itrateParam":"&rec_pagestart",
+                                                        "pages":3,
+                                                        "startFrom":2,
+                                                        "outputCSV":"Victor.csv"
+                                                      }
+                                                    ]
+                                                  }
+    .form-group
+      button#submit.btn.btn-primary(disabled='disabled') Start Scraping &nbsp;
+         i.glyphicon.glyphicon-play
+
+    .form-group
+      p#status.form-control.rounded-0(disabled='disabled' rows='50')
+
+
+  script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
+  script.
+    $(document).ready(function() {
+              
+        logger = (msg) => {
+          console.log(msg);
+          $('#status').append( msg + "</br>").scrollTop($("#status")[0].scrollHeight);
+        }
+        $("#submit").click(function() {
+          logger("Requesting server...");
+            json = $("#json").val();
+            $.post("http://localhost:3000/scraper", {
+                json: json
+            }, function(data) {
+                 logger("Response from server: " + data);
+            });
+        });
+
+        const ws = new WebSocket('ws://localhost:9898/');
+        ws.onopen = function() {
+          logger('Server Connected!');
+           ws.send('lets connect?');
+        };
+        ws.onmessage = function(e) {
+          logger(e.data);
+          $("#submit").removeAttr('disabled');
+        };
+    });

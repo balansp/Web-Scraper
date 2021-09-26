@@ -120,7 +120,7 @@ module.exports = {
             writeStream.write(`${scrapeDataStr}\n`);
     });
   };
-
+   if(scrapeURLList.length<=0) return;
   for (let s = 0; s < scrapeURLList.length; s++) {
     let strColumn = scrapeJSON.columns.join(DEL);
     if(!fs.existsSync(DIR)){

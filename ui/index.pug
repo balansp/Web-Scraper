@@ -13,14 +13,23 @@ head
       background-color: #000;
       color: #fff;
     }
+    .error__invalid-json #json{
+      color :red;
+    }
+    .txt-invalid-json {
+      display:none;
+    }
+
+    .error__invalid-json .txt-invalid-json{
+      display:inline-block;
+    }
 
   
 body
-  
   .container
     h1.align-center Motif - Webscraper!
     .form-group
-      label(for='exampleFormControlTextarea1') JSON Input
+      label(for='json') JSON Input
       textarea#json.form-control.rounded-0(rows='50' spellcheck='false').
                                                     {
                                                       "columns":[
@@ -46,7 +55,7 @@ body
     .form-group
       button#submit.btn.btn-primary(disabled='disabled') Start Scraping &nbsp;
          i.glyphicon.glyphicon-play
-
+      label.txt-invalid-json.text-danger(for="submit") &nbsp; - Invalid Json !
     .form-group
       p#status.form-control.rounded-0(disabled='disabled' rows='50')
 
@@ -68,7 +77,18 @@ body
                  logger("Response from server: " + data);
             });
         });
-
+        $("#json").keyup(()=>{
+          let data = $("#json").val();
+          $("#submit").removeAttr('disabled');
+          try{
+              JSON.parse(data);
+              $("body").removeClass("error__invalid-json")
+          }catch(e){
+              $("#submit").attr('disabled','disabled');   
+              $("body").addClass("error__invalid-json")
+          }
+            
+        });
         const ws = new WebSocket('ws://'+location.hostname+':3001/');
         ws.onopen = function() {
           logger('Server Connected!');

@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const path = require("path");
-
+const fs = require('fs');
 const userData = require("./users");
 const http = require('http');
 const WebSocketServer = require('websocket').server;
@@ -40,14 +40,39 @@ router.get("/", (req, res) => {
   res.render(__dirname+"/ui/index", { title: APP_NAME, message: "Data Scrapper!" });
 });
 
+router.get("/csvfiles", (req, res) => {
+    let filesJson={};
+    filesJson.files=[];
 
+    res.writeHead(200, {"Content-Type": "application/json"});
+      const directoryPath = path.join(__dirname, 'output');
+      fs.readdir(directoryPath, function (err, files) {
+          if (err) {
+              return console.log('Unable to scan directory: ' + err);
+          } 
+          //listing all files using forEach
+          files.forEach(function (file) {
+              // Do whatever you want to do with the file
+              filesJson.files.push(files);
+            // console.log(files)
+          });
+
+          console.log(filesJson); 
+          res.write(JSON.stringify(filesJson));
+          res.end('');
+      });
+});
+
+router.get("/download", (req, res) => {
+  console.log('Downloading '+ req.query.file);
+  res.download(req.query.file)
+});
 
 app.post('/scraper', function(request, response) {
   response.writeHead(200, {'Content-Type': 'text/html'})
   userData.scraper(request.body.json,connection);
   response.end('ok')
 })
-
 
 app.use("/", router);
 app.listen(process.env.port || port);

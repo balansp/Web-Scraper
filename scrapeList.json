@@ -1,0 +1,21 @@
+{
+    "columns":[
+        "url", "Page Number","User Name", "Userid","No of Friends","No of Reviews","No of Photos","Restaurant Name","Website", "Address", "Ratings", "Date","Comments"
+    ],
+    "urls":[
+    {
+      "url":"https://www.yelp.com/user_details_reviews_self?userid=0ObqLJu05px7PtUl57UJbw",
+      "itrateParam":"&rec_pagestart",
+      "pages":1,
+      "startFrom":0,
+      "outputCSV":"RUPINDER.csv"
+    },
+    {
+      "url":"https://www.yelp.com/user_details_reviews_self?&userid=8k3aO-mPeyhbR5HUucA5aA",
+      "itrateParam":"&rec_pagestart",
+      "pages":3,
+      "startFrom":2,
+      "outputCSV":"Victor.csv"
+    }
+  ]
+}

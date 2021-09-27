@@ -1,9 +1,9 @@
 head
-  link(rel="stylesheet" href="styles.css")
-  link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous")
+  link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU' crossorigin='anonymous')
   style.
     #json{
       height:70vh;
+      color: green;
     }
     #status{ 
       border: none;
@@ -28,50 +28,64 @@ head
 body
   .container
     h1.align-center Motif - Webscraper!
-    .form-group
-      label(for='json') JSON Input
-      textarea#json.form-control.rounded-0(rows='50' spellcheck='false').
-                                                    {
-                                                      "columns":[
-                                                          "url", "Page Number","User Name", "Userid","No of Friends","No of Reviews","No of Photos","Restaurant Name","Website", "Address", "Ratings", "Date","Comments"
-                                                      ],
-                                                      "urls":[
-                                                      {
-                                                        "url":"https://www.yelp.com/user_details_reviews_self?userid=0ObqLJu05px7PtUl57UJbw",
-                                                        "itrateParam":"&rec_pagestart",
-                                                        "pages":1,
-                                                        "startFrom":0,
-                                                        "outputCSV":"RUPINDER.csv"
-                                                      },
-                                                      {
-                                                        "url":"https://www.yelp.com/user_details_reviews_self?&userid=8k3aO-mPeyhbR5HUucA5aA",
-                                                        "itrateParam":"&rec_pagestart",
-                                                        "pages":3,
-                                                        "startFrom":2,
-                                                        "outputCSV":"Victor.csv"
-                                                      }
-                                                    ]
-                                                  }
-    .form-group
-      button#submit.btn.btn-primary(disabled='disabled') Start Scraping &nbsp;
-         i.glyphicon.glyphicon-play
-      label.txt-invalid-json.text-danger(for="submit") &nbsp; - Invalid Json !
-    .form-group
-      p#status.form-control.rounded-0(disabled='disabled' rows='50')
-    .form-group
-      button#refresh.btn.btn-success Refresh Output CSV files  
-        i.glyphicon.glyphicon-refresh
-      .
-        &nbsp;
-      button#delete.btn.btn-danger Delete all CSV files 
-        i.glyphicon.glyphicon-trash
-    .form-group
-      ol.csv-files
     hr
+    .row
+      .form-group.mb-3
+        h6 JSON Input
+        textarea#json.form-control.rounded-0(rows='50' spellcheck='false').
+                                                      {
+                                                        "columns":[
+                                                            "url", "Page Number","User Name", "Userid","No of Friends","No of Reviews","No of Photos","Restaurant Name","Website", "Address", "Ratings", "Date","Comments"
+                                                        ],
+                                                        "urls":[
+                                                        {
+                                                          "url":"https://www.yelp.com/user_details_reviews_self?userid=0ObqLJu05px7PtUl57UJbw",
+                                                          "itrateParam":"&rec_pagestart",
+                                                          "pages":1,
+                                                          "startFrom":0,
+                                                          "outputCSV":"RUPINDER.csv"
+                                                        },
+                                                        {
+                                                          "url":"https://www.yelp.com/user_details_reviews_self?&userid=8k3aO-mPeyhbR5HUucA5aA",
+                                                          "itrateParam":"&rec_pagestart",
+                                                          "pages":3,
+                                                          "startFrom":2,
+                                                          "outputCSV":"Victor.csv"
+                                                        }
+                                                      ]
+                                                    }
+      .form-group.mb-3
+        .dropdown
+          button#dropdownMenuButton1.btn.btn-primary.dropdown-toggle(type='button' disabled='disabled' data-bs-toggle='dropdown' aria-expanded='false') Start Scraping
+          ul.dropdown-menu(aria-labelledby='dropdownMenuButton1')
+            li
+              a#submit.dropdown-item(href='javascript:;') Users Reviews
+              .dropdown-divider
+              a.dropdown-item.link-secondary(href='javascript:;') Restaurants Info
+            
+          
+        label.txt-invalid-json.text-danger(for="submit") &nbsp; - Invalid Json !
+      .form-group.mb-3
+        h6 Live Console
+        p#status.form-control.rounded-0.mb-0
+      .form-group.mb-3
+        h6 Files on server
+        button#refresh.btn.btn-success Refresh CSV file list 
+          i.glyphicon.glyphicon-refresh
+        .
+          &nbsp;
+      .form-group.mb-3
         
-
+        ol#files.csv-files.mb-0
+      .form-group.mb-3
+        button#delete.btn.btn-danger Delete all CSV files 
+          i.glyphicon.glyphicon-trash
+    hr
 
   script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
+  script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js' integrity='sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN' crossorigin='anonymous')
+  script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js' integrity='sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ' crossorigin='anonymous')
+
   script.
     $(document).ready(function() {
               
@@ -81,32 +95,37 @@ body
         }
         $("#submit").click(function() {
           logger("Requesting server...");
-            json = $("#json").val();
+           json = ($("#json").val());
             $.post(location.href+"scraper", {
                 json: json
-            }, function(data) {
+            }, (data) =>{
                  logger("Response from server: " + data);
+            },(e) =>{
+                logger('Unable to send to error!!!');
             });
         });
-        $("#json").keyup(()=>{
+    
+    let checkUserJSON = ()=>{
           let data = $("#json").val();
-          $("#submit").removeAttr('disabled');
+          $("#dropdownMenuButton1").removeAttr('disabled');
           try{
               JSON.parse(data);
               $("body").removeClass("error__invalid-json")
           }catch(e){
-              $("#submit").attr('disabled','disabled');   
+              $("#dropdownMenuButton1").attr('disabled','disabled');   
               $("body").addClass("error__invalid-json")
           }
             
-        });
+        }
+      checkUserJSON();
+        $("body").on('focus keyup','#json',checkUserJSON);
 
      let getCSVFiles =()=>{
         $("ol.csv-files li").remove();
         $.get(location.href+"csvfiles", {}, function(data) {
               if(data.files){
                 data.files.forEach((val)=>{
-                    $("ol.csv-files").append(`<li><a href="/download?file=${val}">${val}</a></li>`);
+                    $("ol.csv-files").append(`<li><a class="link-primary" href="/download?file=${val}"><i class="glyphicon glyphicon-file">${val}</a></li>`);
                 });
               }
         });

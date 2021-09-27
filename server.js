@@ -42,7 +42,6 @@ router.get("/", (req, res) => {
 
 router.get("/csvfiles", (req, res) => {
     let filesJson={};
-    filesJson.files=[];
 
     res.writeHead(200, {"Content-Type": "application/json"});
       const directoryPath = path.join(__dirname, 'output');
@@ -50,14 +49,7 @@ router.get("/csvfiles", (req, res) => {
           if (err) {
               return console.log('Unable to scan directory: ' + err);
           } 
-          //listing all files using forEach
-          files.forEach(function (file) {
-              // Do whatever you want to do with the file
-              filesJson.files.push(files);
-            // console.log(files)
-          });
-
-          console.log(filesJson); 
+          filesJson.files = files
           res.write(JSON.stringify(filesJson));
           res.end('');
       });
@@ -65,7 +57,20 @@ router.get("/csvfiles", (req, res) => {
 
 router.get("/download", (req, res) => {
   console.log('Downloading '+ req.query.file);
-  res.download(req.query.file)
+  res.download("output/" + req.query.file)
+});
+
+router.get("/clearDir", (req, res) => {
+
+  fs.readdir('output', (err, files) => {
+    if (err) throw err;
+    for (const file of files) {
+      fs.unlink(path.join('output', file), err => {
+        if (err) throw err;
+      });
+    }
+  });
+  res.end('ok');
 });
 
 app.post('/scraper', function(request, response) {

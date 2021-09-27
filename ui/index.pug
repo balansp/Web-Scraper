@@ -58,6 +58,17 @@ body
       label.txt-invalid-json.text-danger(for="submit") &nbsp; - Invalid Json !
     .form-group
       p#status.form-control.rounded-0(disabled='disabled' rows='50')
+    .form-group
+      button#refresh.btn.btn-success Refresh Output CSV files  
+        i.glyphicon.glyphicon-refresh
+      .
+        &nbsp;
+      button#delete.btn.btn-danger Delete all CSV files 
+        i.glyphicon.glyphicon-trash
+    .form-group
+      ol.csv-files
+    hr
+        
 
 
   script(src='//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js')
@@ -89,6 +100,30 @@ body
           }
             
         });
+
+     let getCSVFiles =()=>{
+        $("ol.csv-files li").remove();
+        $.get(location.href+"csvfiles", {}, function(data) {
+              if(data.files){
+                data.files.forEach((val)=>{
+                    $("ol.csv-files").append(`<li><a href="/download?file=${val}">${val}</a></li>`);
+                });
+              }
+        });
+      };
+
+      getCSVFiles();
+      $("#refresh").click(getCSVFiles);
+      $("#delete").click(()=>{
+        let input = window.confirm("Are you sure you want to detele all the csv in server?");
+        if(input){
+           $.get(location.href+"clearDir", {}, function(data) {
+              getCSVFiles();
+              alert("Done!");
+          });
+        }
+      });
+
         const ws = new WebSocket('ws://'+location.hostname+':3001/');
         ws.onopen = function() {
           logger('Server Connected!');

@@ -15,6 +15,8 @@ const router = express.Router();
 
 const APP_NAME = "Motif - Web Scrapper";
 const port = 3000;
+const authUser = 'user1@motif.com';
+const authPwd = 'Heimdall@2021'
 
 let  connection ;
 
@@ -52,7 +54,7 @@ wsServer.on('request', function(request) {
   });
 });
 
-let isSessionValid = (req) => (req.session && req.session.email && req.session.email=='balan.spx@gmail.com');
+let isSessionValid = (req) => (req.session && req.session.email && req.session.email==authUser);
 
 //************************************************************ Routers ************************************************************
 router.get("/", (req, res) => {
@@ -118,7 +120,7 @@ app.post('/scraper', function(request, response) {
 
 
 app.post('/',bodyParser.urlencoded(),(req,res)=>{
-    if(req.body.email=='user1@motif.com' && req.body.password=='Heimdall@2021') {
+    if(req.body.email==authUser && req.body.password==authPwd) {
        req.session.email=req.body.email;
        console.log("Login Success!!!");
         res.render(__dirname+"/ui/index", { title: APP_NAME,email:req.session.email }); 

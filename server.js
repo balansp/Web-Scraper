@@ -118,7 +118,7 @@ app.post('/scraper', function(request, response) {
 
 
 app.post('/',bodyParser.urlencoded(),(req,res)=>{
-    if(req.body.email=='balan.spx@gmail.com' && req.body.password=='open') {
+    if(req.body.email=='user1@motif.com' && req.body.password=='Heimdall@2021') {
        req.session.email=req.body.email;
        console.log("Login Success!!!");
         res.render(__dirname+"/ui/index", { title: APP_NAME,email:req.session.email }); 

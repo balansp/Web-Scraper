@@ -31,8 +31,10 @@ body
     .container-fluid
       #navbarSupportedContent.collapse.navbar-collapse
         .navbar-nav.me-auto.mb-2.mb-lg-0
-        .d-flex
           span Welcome #{email}!
+        .d-flex
+          a.link-danger(href="/logout") Logout
+          
 
   .container.mt-5
     h1

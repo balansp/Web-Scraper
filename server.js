@@ -128,3 +128,11 @@ app.post('/',bodyParser.urlencoded(),(req,res)=>{
        res.sendStatus(401) ;
     }
 });
+
+
+app.get('/logout',bodyParser.urlencoded(),(req,res)=>{
+  req.session.destroy(() => {
+    res.render(__dirname+"/ui/login", { title: APP_NAME, message: "Data Scrapper!" });
+  })
+  
+});

@@ -108,14 +108,14 @@ router.get("/clearDir", (req, res) => {
   res.end('ok');
 });
 
-app.post('/scraper', function(request, response) {
+app.post('/scraper', function(req, res) {
   if(!isSessionValid(req)){
     res.sendStatus(401);
     return;
   }
-  response.writeHead(200, {'Content-Type': 'text/html'})
-  userData.scraper(request.body.json,connection);
-  response.end('ok')
+  res.writeHead(200, {'Content-Type': 'text/html'})
+  userData.scraper(req.body.json,connection);
+  res.end('ok')
 })
 
 
@@ -131,7 +131,7 @@ app.post('/',bodyParser.urlencoded(),(req,res)=>{
 
 
 app.get('/logout',bodyParser.urlencoded(),(req,res)=>{
-  req.session.destroy(() => {
+  req.session.destroy((err) => {
     res.render(__dirname+"/ui/login", { title: APP_NAME, message: "Data Scrapper!" });
   })
   

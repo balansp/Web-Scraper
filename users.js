@@ -1,14 +1,19 @@
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const { json } = require('express');
+const express = require("express");
+const router = express.Router();
+const app = express();
 
+
+ 
 const DEL = ';';
 const DIR = './output';
 
 let scrapeJSON ,scrapeURLList;
 
-(async () => {
+module.exports = {
+  scraper : async function(scrapeJSON,connection) {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: {
@@ -17,9 +22,12 @@ let scrapeJSON ,scrapeURLList;
     }
   });
   const page = await browser.newPage();
-
-  console.log("Loading Urls from json...");
-   scrapeJSON = await fs.readFileSync('scrapeList.json', 'utf8');
+  const logger = (msg) =>{
+      console.log(msg);
+      connection.sendUTF(msg);
+  };
+  logger("Loading Urls from json...");
+  // scrapeJSON = await fs.readFileSync('scrapeList.json', 'utf8');
    scrapeJSON = JSON.parse(scrapeJSON);
   scrapeURLList =scrapeJSON.urls;
 
@@ -41,7 +49,7 @@ let scrapeJSON ,scrapeURLList;
     strAmenities = arrAmenities.join(', ');
 
       $('ul.ylist.ylist-bordered.reviews > li').each((i, el) => {
-            console.log('Extracting review:' + (i + 1));
+            logger('Extracting review:' + (i + 1));
             let scrapeDataArr = [], cnt = 0;
             let scrapeDataStr = '';
 
@@ -112,7 +120,7 @@ let scrapeJSON ,scrapeURLList;
             writeStream.write(`${scrapeDataStr}\n`);
     });
   };
-
+   if(scrapeURLList.length<=0) return;
   for (let s = 0; s < scrapeURLList.length; s++) {
     let strColumn = scrapeJSON.columns.join(DEL);
     if(!fs.existsSync(DIR)){
@@ -124,16 +132,18 @@ let scrapeJSON ,scrapeURLList;
 
     for (let i = scrapeURLList[s].startFrom; i < scrapeURLList[s].pages; i++) {
       let url = `${scrapeURLList[s].url}&rec_pagestart=${i * 10}`;
-      console.log(`Opening URL:${url} [${i+1}/${scrapeURLList[s].pages}]`);
+      logger(`Opening URL:${url} [${i+1}/${scrapeURLList[s].pages}]`);
       await scrape(url, i + 1, writeStream);
     }
     writeStream.close();
-    console.log(`Saved @ ${DIR}/${scrapeURLList[s].outputCSV}`);
+    logger(`Saved @ ${DIR}/${scrapeURLList[s].outputCSV}`);
   }
 
   //await page.waitFor(1000);
   await browser.close();
-  console.log(`************************`);
-  console.log("All task completed!!! :)");
-  console.log(`************************`);
-})();
+  logger(`************************`);
+  logger("All task completed!!! :)");
+  logger(`************************`);
+}
+}
+
